@@ -38,89 +38,40 @@
 	</div>
 	<div>
 		<h2>Menaxhimi i Perdoruesve</h2>
-		<a th:href="@{/users/new}">Create New User</a>
+		<a th:href="@{/users/new}">Krijo përdorues të ri</a>
 	</div>
 
 	<div th:if="${message != null}" class="alert alert-success text-center">
 		[[${message}]]	
+	</div>
+	
+	<div>
+		<form th:action="@{/users/page/1}" class="form-inline m-3">
+			<input type="hidden" name="sortField" th:value="${sortField}" />
+			<input type="hidden" name="sortDir" th:value="${sortDir}" />
+
+			Filter:&nbsp;
+			<input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
+			&nbsp;&nbsp;
+			<input type="submit" value="Kërko" class="btn btn-primary" />
+			&nbsp;&nbsp;
+			<input type="button" value="Fshij" class="btn btn-secondary" onclick="clearFilter()" />
+		</form>
 	</div>
 
 	<div>
 		<table class="table table-bordered table-striped table-hover table-responsive-xl">
 			<thead class="thead-dark">
 				<tr>
-					<th>
-						<a th:if="${sortField != 'id'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${sortDir}}">
-							ID
-						</a>
-						<a th:if="${sortField == 'id'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">
-							ID
-						</a>
-
-						<span th:if="${sortField == 'id'}"
-							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>					
-
-					</th>
-					<th>Foto</th>
-					<th>
-						<a th:if="${sortField != 'email'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${sortDir}}">
-							Email
-						</a>
-						<a th:if="${sortField == 'email'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}">
-							Email
-						</a>
-
-						<span th:if="${sortField == 'email'}"
-							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>					
-					</th>
-
-					<th>
-						<a th:if="${sortField != 'firstName'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${sortDir}}">
-							Emri
-						</a>
-						<a th:if="${sortField == 'firstName'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}}">
-							Emri
-						</a>
-
-						<span th:if="${sortField == 'firstName'}"
-							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>
-					</th>
-
-					<th>
-						<a th:if="${sortField != 'lastName'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${sortDir}}">
-							Mbiemri
-						</a>
-						<a th:if="${sortField == 'lastName'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}}">
-							Mbiemri
-						</a>
-
-						<span th:if="${sortField == 'lastName'}"
-							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>
-					</th>
-					<th>Roli</th>
-					<th>
-						<a th:if="${sortField != 'enabled'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=enabled&sortDir=' + ${sortDir}}">
-							Aktivizimi
-						</a>
-						<a th:if="${sortField == 'enabled'}" class="text-white"
-							th:href="@{'/users/page/' + ${currentPage} + '?sortField=enabled&sortDir=' + ${reverseSortDir}}">
-							Aktivizimi
-						</a>
-
-						<span th:if="${sortField == 'enabled'}"
-							th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>					
-					</th>
+					<th th:replace="~{fragments :: column_link('id', 'ID')}" />
+					<th>Photos</th>
+					<th th:replace="~{fragments :: column_link('email', 'Email')}" />
+					<th th:replace="~{fragments :: column_link('firstName', 'Emri')}" />
+					<th th:replace="~{fragments :: column_link('lastName', 'Mbiemri')}" />
+					<th>Rolet</th>
+					<th th:replace="~{fragments :: column_link('enabled', 'Aktivizimi')}" />
 					<th>Veprime</th>
-				</tr>								
+				</tr>					
 			</thead>
 			<tbody>
 				<tr th:each="user : ${listUsers}">
@@ -167,28 +118,27 @@
 		<span>Nuk u gjet asnjë përdorues</span>
 	</div>
 
-	<div>
+	<div th:if="${totalPages > 1}">
 		<nav>
 		  <ul class="pagination justify-content-center">
 		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-		    	<a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+		    	<a th:replace="~{fragments :: page_link(1, 'First')}"></a>
 		    </li>		  
 		    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-		    	<a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+		    	<a th:replace="~{fragments :: page_link(${currentPage - 1}, 'Previous')}"></a>
 		    </li>
-
+		    
 		    <li th:class="${currentPage != i ? 'page-item': 'page-item active'}" 
 		    	th:each="i : ${#numbers.sequence(1, totalPages)}">
-		    	<a class="page-link" th:href="@{'/users/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+		    	<a th:replace="~{fragments :: page_link(${i}, ${i})}"></a>
 		    </li>
-
-
+		    
 		    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-		    	<a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+		    	<a th:replace="~{fragments :: page_link(${currentPage + 1}, 'Next')}"></a>
 		    </li>
-
+		    
 		    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-		    	<a class="page-link" th:href="@{'/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+		    	<a th:replace="~{fragments :: page_link(${totalPages}, 'Last')}"></a>
 		    </li>		    
 		  </ul>
 		</nav>	
@@ -232,6 +182,10 @@
 			$("#confirmModal").modal();
 		});
 	});
+	
+	function clearFilter() {
+		window.location = "[[@{/users}]]";	
+	}
 </script>
 </body>
 </html>
