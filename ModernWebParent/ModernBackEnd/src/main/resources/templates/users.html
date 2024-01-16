@@ -39,6 +39,12 @@
 	<div>
 		<h2>Menaxhimi i Perdoruesve</h2>
 		<a th:href="@{/users/new}">Krijo përdorues të ri</a>
+		&nbsp;|&nbsp;
+		<a th:href="@{/users/export/csv}">Eksporto në CSV</a>
+		&nbsp;|&nbsp;
+		<a th:href="@{/users/export/excel}">Eksporto në Excel</a>	
+		&nbsp;|&nbsp;
+		<a th:href="@{/users/export/pdf}">Eksporto në PDF</a>	
 	</div>
 
 	<div th:if="${message != null}" class="alert alert-success text-center">
