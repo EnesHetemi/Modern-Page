@@ -1,4 +1,4 @@
-package com.modern.admin.user;
+package com.modern.admin.exporter;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
+import com.modern.admin.user.AbstractExporter;
 import com.modern.common.entity.User;
 
 public class UserCsvExporter extends AbstractExporter  {
